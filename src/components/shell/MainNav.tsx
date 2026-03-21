@@ -9,6 +9,7 @@ import {
   Moon,
   Sun,
   Vault,
+  BookLock,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -29,7 +30,7 @@ const topNavItems: NavItem[] = [
   {
     id: "vault",
     label: "Vault",
-    icon: <Vault size={18} />,
+    icon: <BookLock size={18} />,
     href: "/vault",
     shortcut: "⌘1",
   },

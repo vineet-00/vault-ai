@@ -1,5 +1,5 @@
 import { Folder } from "@/lib/tauri";
-import { Library, Folder as FolderIcon } from "lucide-react";
+import { Library, Folder as FolderIcon, LayoutList } from "lucide-react";
 
 export const FolderTree = ({
   folders,
@@ -22,7 +22,7 @@ export const FolderTree = ({
           }`}
         onClick={() => onSelectFolder(null)}
       >
-        <Library size={15} className="mr-2 shrink-0" />
+        <LayoutList size={15} className="mr-2 shrink-0" />
         All Documents
       </button>
       {/*Folder list */}
