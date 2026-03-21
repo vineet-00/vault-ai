@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "models": {
+      "watchedFolders": "Folders on the user's filesystem that VaultAI monitors for new files. When a new file appears, it is automatically ingested as a Document.",
+      "llmModels": "Local LLM models available for download and use within VaultAI. Only one model can be active at a time.",
+      "encryptionSettings": "Configuration for vault encryption — whether it is enabled, the strength of the current key, and options to change it.",
+      "storageInfo": "Information about the vault's storage location, total size, and document count."
+    },
+    "relationships": [
+      "Each WatchedFolder produces Documents when new files are detected",
+      "Exactly one LLMModel is active at a time",
+      "EncryptionSettings apply globally to all vault content"
+    ]
+  },
+  "watchedFolders": [
+    {
+      "id": "wf-1",
+      "path": "/home/vineet/Documents/Research",
+      "status": "active",
+      "fileCount": 34,
+      "lastSynced": "2025-12-08T10:45:00Z",
+      "isPaused": false
+    },
+    {
+      "id": "wf-2",
+      "path": "/home/vineet/Downloads",
+      "status": "indexing",
+      "fileCount": 12,
+      "lastSynced": "2025-12-08T09:30:00Z",
+      "isPaused": false
+    },
+    {
+      "id": "wf-3",
+      "path": "/home/vineet/Work/Projects",
+      "status": "paused",
+      "fileCount": 58,
+      "lastSynced": "2025-12-06T14:20:00Z",
+      "isPaused": true
+    },
+    {
+      "id": "wf-4",
+      "path": "/home/vineet/Desktop/Papers",
+      "status": "error",
+      "fileCount": 0,
+      "lastSynced": null,
+      "isPaused": false
+    }
+  ],
+  "llmModels": [
+    {
+      "id": "lm-1",
+      "name": "Llama 3.2 3B",
+      "description": "Fast, lightweight model ideal for quick queries and summarization. Best for everyday use on mid-range hardware.",
+      "size": "2.0 GB",
+      "ramRequired": "4 GB RAM",
+      "status": "active",
+      "downloadProgress": null
+    },
+    {
+      "id": "lm-2",
+      "name": "Llama 3.1 8B",
+      "description": "Balanced model with strong reasoning capabilities. Good for complex research queries and detailed explanations.",
+      "size": "4.7 GB",
+      "ramRequired": "8 GB RAM",
+      "status": "downloaded",
+      "downloadProgress": null
+    },
+    {
+      "id": "lm-3",
+      "name": "Mistral 7B",
+      "description": "High-performance open model with excellent instruction following. Great for technical and code-related queries.",
+      "size": "4.1 GB",
+      "ramRequired": "8 GB RAM",
+      "status": "downloading",
+      "downloadProgress": 67
+    },
+    {
+      "id": "lm-4",
+      "name": "Phi-3 Mini",
+      "description": "Microsoft's compact model with surprisingly strong performance. Ideal for low-memory devices.",
+      "size": "2.3 GB",
+      "ramRequired": "4 GB RAM",
+      "status": "not-downloaded",
+      "downloadProgress": null
+    },
+    {
+      "id": "lm-5",
+      "name": "Gemma 2 9B",
+      "description": "Google's open model with strong multilingual support and reasoning. Best for diverse research content.",
+      "size": "5.4 GB",
+      "ramRequired": "16 GB RAM",
+      "status": "not-downloaded",
+      "downloadProgress": null
+    },
+    {
+      "id": "lm-6",
+      "name": "Qwen 2.5 7B",
+      "description": "Alibaba's efficient model with excellent coding and analytical capabilities.",
+      "size": "4.4 GB",
+      "ramRequired": "8 GB RAM",
+      "status": "not-downloaded",
+      "downloadProgress": null
+    }
+  ],
+  "encryptionSettings": {
+    "enabled": true,
+    "keyStrength": "strong",
+    "lastChanged": "2025-11-15",
+    "algorithm": "AES-256-GCM"
+  },
+  "storageInfo": {
+    "vaultPath": "/home/vineet/.vaultai",
+    "totalSize": "2.3 GB",
+    "documentCount": 47,
+    "embeddingSize": "124 MB"
+  },
+  "activeCategory": "watched-folders"
+}

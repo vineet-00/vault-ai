@@ -1,0 +1,142 @@
+{
+  "_meta": {
+    "models": {
+      "folders": "Folders group documents inside the vault. Users can nest folders and assign tags to organize their knowledge.",
+      "tags": "Tags are labels attached to documents — either user-assigned or AI-generated from document content.",
+      "documents": "Documents are files ingested into the vault — PDFs, markdown files, images, or code files. Each tracks its embedding status and AI-generated metadata."
+    },
+    "relationships": [
+      "Each Document belongs to one Folder",
+      "Each Document can have many Tags",
+      "Folders can contain many Documents",
+      "Tags can be attached to many Documents across different Folders"
+    ]
+  },
+  "folders": [
+    {
+      "id": "f-1",
+      "name": "Research Papers",
+      "documentCount": 12,
+      "expanded": true
+    },
+    {
+      "id": "f-2",
+      "name": "Work Projects",
+      "documentCount": 8,
+      "expanded": false
+    },
+    {
+      "id": "f-3",
+      "name": "Personal Notes",
+      "documentCount": 5,
+      "expanded": false
+    },
+    {
+      "id": "f-4",
+      "name": "Codebase Docs",
+      "documentCount": 3,
+      "expanded": false
+    }
+  ],
+  "tags": [
+    { "id": "t-1", "name": "AI", "documentCount": 7 },
+    { "id": "t-2", "name": "Research", "documentCount": 11 },
+    { "id": "t-3", "name": "TypeScript", "documentCount": 4 },
+    { "id": "t-4", "name": "Privacy", "documentCount": 3 },
+    { "id": "t-5", "name": "Architecture", "documentCount": 5 }
+  ],
+  "documents": [
+    {
+      "id": "d-1",
+      "title": "Attention Is All You Need",
+      "fileType": "pdf",
+      "folderId": "f-1",
+      "tags": ["AI", "Research"],
+      "embeddingStatus": "ready",
+      "size": "1.2 MB",
+      "pageCount": 15,
+      "createdAt": "2025-11-14",
+      "summary": "Introduces the Transformer architecture, replacing recurrent models with self-attention mechanisms for sequence transduction tasks. Achieves state-of-the-art results on translation benchmarks.",
+      "preview": "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder..."
+    },
+    {
+      "id": "d-2",
+      "title": "VaultAI Architecture Notes",
+      "fileType": "markdown",
+      "folderId": "f-2",
+      "tags": ["Architecture", "TypeScript"],
+      "embeddingStatus": "ready",
+      "size": "48 KB",
+      "pageCount": null,
+      "createdAt": "2025-12-01",
+      "summary": "Internal notes on the Tauri + Rust + React architecture decisions for VaultAI, covering the IPC bridge, vector DB selection, and embedding pipeline design.",
+      "preview": "# VaultAI Architecture\n\nThis document outlines the core architectural decisions made during the initial design phase..."
+    },
+    {
+      "id": "d-3",
+      "title": "Privacy in Local-First Software",
+      "fileType": "pdf",
+      "folderId": "f-1",
+      "tags": ["Privacy", "Research"],
+      "embeddingStatus": "processing",
+      "size": "890 KB",
+      "pageCount": 22,
+      "createdAt": "2025-12-03",
+      "summary": null,
+      "preview": null
+    },
+    {
+      "id": "d-4",
+      "title": "Rust Ownership Model Deep Dive",
+      "fileType": "markdown",
+      "folderId": "f-4",
+      "tags": ["Architecture"],
+      "embeddingStatus": "ready",
+      "size": "112 KB",
+      "pageCount": null,
+      "createdAt": "2025-11-28",
+      "summary": "A detailed walkthrough of Rust's ownership, borrowing, and lifetime system with practical examples from real codebases.",
+      "preview": "# Rust Ownership\n\nOwnership is Rust's most unique feature and enables memory safety without a garbage collector..."
+    },
+    {
+      "id": "d-5",
+      "title": "Weekly Research Log — Dec 2025",
+      "fileType": "markdown",
+      "folderId": "f-3",
+      "tags": ["Research"],
+      "embeddingStatus": "ready",
+      "size": "34 KB",
+      "pageCount": null,
+      "createdAt": "2025-12-07",
+      "summary": "Personal research log tracking readings, insights, and open questions from the week of December 2025.",
+      "preview": "## December 7\n\nRead through the candle-rs documentation today. Embedding pipeline looks feasible with the BERT model..."
+    },
+    {
+      "id": "d-6",
+      "title": "usearch Vector Database Benchmarks",
+      "fileType": "pdf",
+      "folderId": "f-1",
+      "tags": ["AI", "Architecture"],
+      "embeddingStatus": "failed",
+      "size": "2.1 MB",
+      "pageCount": 18,
+      "createdAt": "2025-12-05",
+      "summary": null,
+      "preview": null
+    },
+    {
+      "id": "d-7",
+      "title": "Meeting Notes — Product Kickoff",
+      "fileType": "markdown",
+      "folderId": "f-3",
+      "tags": [],
+      "embeddingStatus": "pending",
+      "size": "12 KB",
+      "pageCount": null,
+      "createdAt": "2025-12-08",
+      "summary": null,
+      "preview": null
+    }
+  ],
+  "selectedDocument": "d-1"
+}

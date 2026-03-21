@@ -1,0 +1,135 @@
+{
+  "_meta": {
+    "models": {
+      "notes": "A note is a markdown document created directly inside VaultAI by the user. It lives in a folder, can have tags, and accumulates AI-generated metadata over time.",
+      "flashcards": "Flashcards are AI-generated question/answer pairs derived from a note's content to help the user retain key information.",
+      "insights": "Key insights are AI-extracted bullet points summarizing the most important takeaways from a note.",
+      "relatedDocuments": "Related documents are vault items (PDFs or other notes) that the AI identifies as conceptually linked to the current note."
+    },
+    "relationships": [
+      "Each Note belongs to one Folder",
+      "Each Note has many Flashcards generated from its content",
+      "Each Note has many Insights extracted by AI",
+      "Each Note has many Related Documents suggested by the AI"
+    ]
+  },
+  "folders": [
+    {
+      "id": "f-1",
+      "name": "Research Papers",
+      "documentCount": 12,
+      "expanded": true
+    },
+    {
+      "id": "f-2",
+      "name": "Work Projects",
+      "documentCount": 8,
+      "expanded": false
+    },
+    {
+      "id": "f-3",
+      "name": "Personal Notes",
+      "documentCount": 5,
+      "expanded": false
+    },
+    {
+      "id": "f-4",
+      "name": "Codebase Docs",
+      "documentCount": 3,
+      "expanded": false
+    }
+  ],
+  "notes": [
+    {
+      "id": "n-1",
+      "title": "Transformer Architecture — My Notes",
+      "folderId": "f-1",
+      "tags": ["AI", "Research"],
+      "content": "# Transformer Architecture\n\nThe Transformer model was introduced in the paper *Attention Is All You Need* (Vaswani et al., 2017).\n\n## Core Idea\n\nInstead of processing sequences step-by-step like RNNs, Transformers process the entire sequence at once using **self-attention**.\n\n## Self-Attention\n\nFor each token, self-attention computes a weighted sum of all other tokens:\n\n```\nAttention(Q, K, V) = softmax(QK^T / sqrt(d_k)) * V\n```\n\n## Why It Works\n\n- Captures long-range dependencies efficiently\n- Parallelizable — no sequential bottleneck\n- Scales well with data and compute\n\n## Key Components\n\n1. Multi-head attention\n2. Positional encoding\n3. Feed-forward layers\n4. Layer normalization",
+      "wordCount": 312,
+      "readingTime": "2 min",
+      "createdAt": "2025-11-20",
+      "updatedAt": "2025-12-01",
+      "saveStatus": "saved",
+      "aiGenerated": {
+        "summary": "Personal study notes on the Transformer architecture, covering self-attention mechanics, positional encoding, and why the architecture outperforms RNNs for sequence tasks.",
+        "insights": [
+          "Self-attention allows every token to attend to every other token in O(1) steps, unlike RNNs which require O(n)",
+          "The scaling factor sqrt(d_k) prevents vanishing gradients in the dot-product attention",
+          "Multi-head attention learns different relationship types in parallel — syntax, semantics, coreference",
+          "Positional encoding is necessary because attention is permutation-invariant by default"
+        ],
+        "flashcards": [
+          {
+            "id": "fc-1",
+            "question": "What problem does self-attention solve that RNNs struggle with?",
+            "answer": "Long-range dependencies. RNNs degrade over long sequences due to vanishing gradients. Self-attention connects any two positions in O(1) operations."
+          },
+          {
+            "id": "fc-2",
+            "question": "Why do we divide by sqrt(d_k) in the attention formula?",
+            "answer": "To prevent the dot products from growing too large in high dimensions, which would push softmax into regions with very small gradients."
+          },
+          {
+            "id": "fc-3",
+            "question": "What is the purpose of positional encoding?",
+            "answer": "To inject sequence order information, since self-attention is permutation-invariant and cannot distinguish token positions on its own."
+          }
+        ],
+        "relatedDocuments": [
+          {
+            "id": "d-1",
+            "title": "Attention Is All You Need",
+            "fileType": "pdf"
+          },
+          {
+            "id": "d-3",
+            "title": "Privacy in Local-First Software",
+            "fileType": "pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "n-2",
+      "title": "VaultAI — Weekly Dev Log",
+      "folderId": "f-2",
+      "tags": ["Architecture"],
+      "content": "# VaultAI Dev Log\n\n## Week of Dec 7, 2025\n\nMade good progress on the Rust embedding pipeline today. The `candle-rs` integration is working for BERT-style models.\n\n### What worked\n- Token chunking with overlap\n- Batch embedding for multiple documents\n- usearch index persistence\n\n### Blockers\n- PDF text extraction losing formatting on some docs\n- Need to handle embedded images in PDFs separately\n\n## Next Steps\n- Wire up the Tauri IPC bridge for search\n- Build the React search results component\n- Test with larger document sets",
+      "wordCount": 98,
+      "readingTime": "1 min",
+      "createdAt": "2025-12-07",
+      "updatedAt": "2025-12-08",
+      "saveStatus": "saved",
+      "aiGenerated": null
+    },
+    {
+      "id": "n-3",
+      "title": "Ideas — Knowledge Graph UI",
+      "folderId": "f-3",
+      "tags": ["Architecture", "AI"],
+      "content": "# Knowledge Graph UI Ideas\n\nThinking about how to visualize connections between documents...\n\n- Force-directed graph using D3.js\n- Nodes = documents, edges = semantic similarity score\n- Color nodes by file type\n- Click node to open document preview\n- Zoom + pan navigation",
+      "wordCount": 47,
+      "readingTime": "< 1 min",
+      "createdAt": "2025-12-05",
+      "updatedAt": "2025-12-05",
+      "saveStatus": "saved",
+      "aiGenerated": null
+    },
+    {
+      "id": "n-4",
+      "title": "Reading Notes — Rust Ownership",
+      "folderId": "f-1",
+      "tags": ["Architecture"],
+      "content": "# Rust Ownership Notes\n\nKey rules:\n1. Each value has one owner\n2. When owner goes out of scope, value is dropped\n3. You can have many immutable refs OR one mutable ref\n\n## Lifetimes\n\nLifetimes ensure references don't outlive the data they point to...",
+      "wordCount": 64,
+      "readingTime": "< 1 min",
+      "createdAt": "2025-11-29",
+      "updatedAt": "2025-11-30",
+      "saveStatus": "unsaved",
+      "aiGenerated": null
+    }
+  ],
+  "selectedNote": "n-1",
+  "aiPanelOpen": true
+}

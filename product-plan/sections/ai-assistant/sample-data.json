@@ -1,0 +1,113 @@
+{
+  "_meta": {
+    "models": {
+      "threads": "A thread is a named conversation grouped around a document or topic. Users can have multiple threads and switch between them.",
+      "messages": "A message is a single turn in a conversation — either a user query or an AI response. AI responses include citations, confidence scores, and action metadata.",
+      "citations": "Citations are source references attached to an AI response, pointing back to specific documents in the vault with a matched excerpt.",
+      "followUps": "Follow-up suggestions are AI-generated questions that appear after each response to help the user continue exploring the topic."
+    },
+    "relationships": [
+      "Each Thread contains many Messages",
+      "Each AI Message has many Citations pointing to vault Documents",
+      "Each AI Message has many FollowUp suggestions",
+      "Threads are grouped by a topic or attached Document"
+    ]
+  },
+  "threads": [
+    {
+      "id": "th-1",
+      "title": "Transformer Architecture",
+      "topic": "Attention Is All You Need",
+      "documentId": "d-1",
+      "lastMessage": "Multi-head attention allows the model to jointly attend to information from different representation subspaces...",
+      "updatedAt": "2025-12-08",
+      "messageCount": 6
+    },
+    {
+      "id": "th-2",
+      "title": "VaultAI Rust Backend",
+      "topic": "Architecture Notes",
+      "documentId": "d-2",
+      "lastMessage": "The IPC bridge serializes arguments to JSON and sends them to Rust via Tauri's invoke system...",
+      "updatedAt": "2025-12-07",
+      "messageCount": 4
+    },
+    {
+      "id": "th-3",
+      "title": "Privacy & Local-First",
+      "topic": "General Research",
+      "documentId": null,
+      "lastMessage": "Local-first software keeps data on the user's device by default, syncing only when explicitly requested...",
+      "updatedAt": "2025-12-05",
+      "messageCount": 3
+    }
+  ],
+  "messages": [
+    {
+      "id": "m-1",
+      "threadId": "th-1",
+      "role": "user",
+      "content": "Can you explain how multi-head attention works in the Transformer?",
+      "timestamp": "2025-12-08T10:22:00Z",
+      "attachedDocument": null
+    },
+    {
+      "id": "m-2",
+      "threadId": "th-1",
+      "role": "assistant",
+      "content": "## Multi-Head Attention\n\nMulti-head attention runs the attention mechanism **multiple times in parallel**, each time with different learned projection matrices.\n\n### How it works\n\n1. The input is linearly projected into `h` different Query, Key, Value representations\n2. Scaled dot-product attention is applied to each projection independently\n3. The outputs are concatenated and projected back to the original dimension\n\n```\nMultiHead(Q,K,V) = Concat(head_1,...,head_h) W^O\nwhere head_i = Attention(Q W_i^Q, K W_i^K, V W_i^V)\n```\n\n### Why multiple heads?\n\nEach head can learn to attend to **different types of relationships** — one head might focus on syntactic dependencies while another captures semantic similarity. This gives the model a richer representational capacity than single-head attention.",
+      "timestamp": "2025-12-08T10:22:04Z",
+      "isStreaming": false,
+      "confidence": 94,
+      "citations": [
+        {
+          "id": "c-1",
+          "documentId": "d-1",
+          "documentTitle": "Attention Is All You Need",
+          "excerpt": "Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions.",
+          "page": 4
+        }
+      ],
+      "followUps": [
+        "What is the difference between self-attention and cross-attention?",
+        "How does positional encoding interact with multi-head attention?",
+        "Why does the Transformer use layer normalization instead of batch normalization?"
+      ],
+      "feedback": null
+    },
+    {
+      "id": "m-3",
+      "threadId": "th-1",
+      "role": "user",
+      "content": "What are the computational costs compared to RNNs?",
+      "timestamp": "2025-12-08T10:25:00Z",
+      "attachedDocument": null
+    },
+    {
+      "id": "m-4",
+      "threadId": "th-1",
+      "role": "assistant",
+      "content": "## Computational Complexity Comparison\n\n| Operation | Transformer | RNN |\n|-----------|-------------|-----|\n| Per-layer complexity | O(n² · d) | O(n · d²) |\n| Sequential operations | O(1) | O(n) |\n| Max path length | O(1) | O(n) |\n\nThe Transformer trades **sequential computation** (RNN's bottleneck) for **quadratic memory** in sequence length. For long sequences this becomes expensive, which is why models like Longformer and BigBird use sparse attention patterns.",
+      "timestamp": "2025-12-08T10:25:03Z",
+      "isStreaming": false,
+      "confidence": 89,
+      "citations": [
+        {
+          "id": "c-2",
+          "documentId": "d-1",
+          "documentTitle": "Attention Is All You Need",
+          "excerpt": "A self-attention layer connects all positions with a constant number of sequentially executed operations, whereas a recurrent layer requires O(n) sequential operations.",
+          "page": 6
+        }
+      ],
+      "followUps": [
+        "How do sparse attention mechanisms reduce the quadratic cost?",
+        "What sequence lengths are practical for standard Transformers?",
+        "How does the Transformer handle very long documents in practice?"
+      ],
+      "feedback": "up"
+    }
+  ],
+  "selectedThread": "th-1",
+  "isStreaming": false
+}

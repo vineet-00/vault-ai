@@ -1,0 +1,63 @@
+import { invoke } from "@tauri-apps/api/core";
+import { open } from "@tauri-apps/plugin-dialog";
+
+export interface Folder {
+  id: string;
+  name: string;
+  parent_id: string | null;
+}
+
+export interface Tag {
+  id: string;
+  name: string;
+}
+
+export interface Document {
+  id: string;
+  title: string;
+  file_type: string;
+  folder_id: string | null;
+  path: string;
+  size: number | null;
+  page_count: number | null;
+  embedding_status: string;
+  summary: string | null;
+  tags: Tag[];
+  created_at: string | null;
+  updated_at: string | null;
+}
+
+export async function getFolders(): Promise<Folder[]> {
+  return invoke<Folder[]>("get_folders");
+}
+
+export async function getTags(): Promise<Tag[]> {
+  return invoke<Tag[]>("get_tags");
+}
+
+export async function getDocuments(): Promise<Document[]> {
+  return invoke<Document[]>("get_documents");
+}
+
+export async function deleteDocument(id: string): Promise<boolean> {
+  return invoke<boolean>("delete_document", { id });
+}
+
+export async function addTag(
+  documentId: string,
+  tagName: string,
+): Promise<void> {
+  return invoke("add_tag", { document_id: documentId, tag_name: tagName });
+}
+
+export async function ingestFile(path: string): Promise<Document> {
+  return invoke<Document>("ingest_file", { path });
+}
+
+export async function pickFile(): Promise<string | null> {
+  const result = await open({
+    multiple: false,
+    directory: false,
+  });
+  return result as string | null;
+}

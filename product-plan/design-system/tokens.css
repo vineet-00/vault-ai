@@ -1,0 +1,9 @@
+/* Design Tokens — VaultAI */
+:root {
+  --color-primary: indigo;
+  --color-secondary: slate;
+  --color-neutral: zinc;
+  --font-heading: 'Geist Variable', sans-serif;
+  --font-body: 'Geist Variable', sans-serif;
+  --font-mono: 'Geist Mono Variable', monospace;
+}
