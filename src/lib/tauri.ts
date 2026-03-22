@@ -27,6 +27,16 @@ export interface Document {
   updated_at: string | null;
 }
 
+export interface Note {
+  id: string;
+  title: string;
+  content: string;
+  folder_id: string | null;
+  tags: Tag[];
+  created_at: string | null;
+  updated_at: string | null;
+}
+
 export async function getFolders(): Promise<Folder[]> {
   return invoke<Folder[]>("get_folders");
 }
@@ -60,4 +70,24 @@ export async function pickFile(): Promise<string | null> {
     directory: false,
   });
   return result as string | null;
+}
+
+export async function getNotes(): Promise<Note[]> {
+  return invoke<Note[]>("get_notes");
+}
+
+export async function createNote(): Promise<Note> {
+  return invoke<Note>("create_note");
+}
+
+export async function updateNote(
+  id: string,
+  title: string,
+  content: string,
+): Promise<void> {
+  return invoke("update_note", { id, title, content });
+}
+
+export async function deleteNote(id: string): Promise<boolean> {
+  return invoke<boolean>("delete_note", { id });
 }

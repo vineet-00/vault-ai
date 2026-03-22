@@ -28,3 +28,14 @@ pub struct Document {
     pub created_at: Option<String>,
     pub updated_at: Option<String>,
 }
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Note{
+    pub id: String,
+    pub title: String,
+    pub content: String,
+    pub folder_id: Option<String>,
+    pub tags: Vec<Tag>,
+    pub created_at: Option<String>,
+    pub updated_at: Option<String>
+}

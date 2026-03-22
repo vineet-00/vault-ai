@@ -42,6 +42,21 @@ pub fn init_db() -> Result<Connection> {
             tag_id TEXT NOT NULL,
             PRIMARY KEY (document_id, tag_id)
         );
+
+        CREATE TABLE IF NOT EXISTS notes (
+            id TEXT PRIMARY KEY,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL DEFAULT '',
+            folder_id TEXT,
+            created_at TEXT,
+            updated_at TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS note_tags (
+            note_id TEXT NOT NULL,
+            tag_id TEXT NOT NULL,
+            PRIMARY KEY (note_id, tag_id)
+        );
     ")?;
 
     Ok(conn)
