@@ -1,19 +1,26 @@
 import { Document as VaultDocument } from "@/lib/tauri";
+import { Trash2 } from "lucide-react";
 
 interface DocumentRowProps {
   document: VaultDocument;
   isSelected: boolean;
   onSelect: (doc: VaultDocument) => void;
+  onDelete: (id: string) => void;
 }
 
 export const DocumentRow = ({
   document,
   isSelected,
   onSelect,
+  onDelete,
 }: DocumentRowProps) => {
   return (
     <div
-      className={`flex items-center px-3 py-2 hover:cursor-pointer rounded-md transition-colors ${isSelected ? "bg-primary text-primary-foreground" : "hover:bg-accent text-muted-foreground"}`}
+      className={`group flex items-center px-3 py-2 hover:cursor-pointer rounded-md transition-colors ${
+        isSelected
+          ? "bg-primary text-primary-foreground"
+          : "hover:bg-accent text-muted-foreground"
+      }`}
       onClick={() => onSelect(document)}
     >
       <span
@@ -29,6 +36,15 @@ export const DocumentRow = ({
       <span className="ml-auto text-xs bg-muted px-1.5 py-0.5 rounded">
         {document.file_type}
       </span>
+      <button
+        onClick={(e) => {
+          e.stopPropagation(); // prevent selecting the document
+          onDelete(document.id);
+        }}
+        className="ml-2 p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-destructive/20 hover:text-destructive transition-all shrink-0"
+      >
+        <Trash2 size={12} />
+      </button>
     </div>
   );
 };

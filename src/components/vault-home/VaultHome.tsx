@@ -5,12 +5,14 @@ import {
   ingestFile,
   pickFile,
   Document as VaultDocument,
+  deleteDocument,
 } from "@/lib/tauri";
 import { useEffect, useState } from "react";
 import { DocumentRow } from "./DocumentRow";
 import { EmptyState } from "./EmptyState";
 import FolderTree from "./FolderTree";
 import PreviewPanel from "./PreviewPanel";
+import { Plus } from "lucide-react";
 
 export const VaultHome = () => {
   const [documents, setDocuments] = useState<VaultDocument[]>([]);
@@ -35,6 +37,16 @@ export const VaultHome = () => {
     getFolders().then(setFolders).catch(console.error);
   }, []);
 
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteDocument(id);
+      setDocuments((prev) => prev.filter((d) => d.id !== id));
+      if (selectedDocument?.id === id) setSelectedDocument(null);
+    } catch (err) {
+      console.error("Failed to delete document:", err);
+    }
+  };
+
   return (
     <div className="h-full flex overflow-hidden">
       <div className="w-[200px]">
@@ -44,19 +56,34 @@ export const VaultHome = () => {
           onSelectFolder={setSelectedFolderId}
         />
       </div>
-      <div className="flex-1 min-w-0 overflow-hidden overflow-y-auto">
-        {documents.length === 0 ? (
-          <EmptyState onUpload={handleUpload} />
-        ) : (
-          documents.map((doc) => (
-            <DocumentRow
-              key={doc.id}
-              document={doc}
-              isSelected={selectedDocument?.id === doc.id}
-              onSelect={setSelectedDocument}
-            />
-          ))
-        )}
+      <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
+        {/* Header with upload button */}
+        <div className="px-3 py-2 border-b border-border flex items-center justify-between shrink-0">
+          <span className="text-sm font-medium text-foreground">Documents</span>
+          <button
+            onClick={handleUpload}
+            className="p-1 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Plus size={16} />
+          </button>
+        </div>
+
+        {/* Document list or empty state */}
+        <div className="flex-1 overflow-y-auto">
+          {documents.length === 0 ? (
+            <EmptyState onUpload={handleUpload} />
+          ) : (
+            documents.map((doc) => (
+              <DocumentRow
+                key={doc.id}
+                document={doc}
+                isSelected={selectedDocument?.id === doc.id}
+                onSelect={setSelectedDocument}
+                onDelete={handleDelete}
+              />
+            ))
+          )}
+        </div>
       </div>
       <div className="w-[420px]">
         <PreviewPanel document={selectedDocument} />

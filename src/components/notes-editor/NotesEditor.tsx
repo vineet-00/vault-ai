@@ -84,6 +84,15 @@ export const NotesEditor = () => {
       setContent((prev) => `${syntax}${prev}${syntax}`);
     }
   };
+  const handleDeleteNote = async (id: string) => {
+    try {
+      await deleteNote(id);
+      setNotes((prev) => prev.filter((n) => n.id !== id));
+      if (selectedNote?.id === id) setSelectedNote(null);
+    } catch (err) {
+      console.error("Failed to delete note:", err);
+    }
+  };
 
   const wordCount =
     content.trim() === "" ? 0 : content.trim().split(/\s+/).length;
@@ -97,6 +106,7 @@ export const NotesEditor = () => {
           selectedNoteId={selectedNote?.id ?? null}
           onSelectNote={handleSelectNote}
           onCreateNote={handleCreateNote}
+          onDeleteNote={handleDeleteNote}
         />
       </div>
 

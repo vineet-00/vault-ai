@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Trash2 } from "lucide-react";
 import { Note } from "@/lib/tauri";
 
 interface NotesListProps {
@@ -7,6 +7,7 @@ interface NotesListProps {
   selectedNoteId: string | null;
   onSelectNote: (note: Note) => void;
   onCreateNote: () => void;
+  onDeleteNote: (id: string) => void;
 }
 
 export const NotesList = ({
@@ -14,6 +15,7 @@ export const NotesList = ({
   selectedNoteId,
   onSelectNote,
   onCreateNote,
+  onDeleteNote,
 }: NotesListProps) => {
   const [search, setSearch] = useState("");
 
@@ -55,20 +57,36 @@ export const NotesList = ({
           </p>
         ) : (
           filtered.map((note) => (
-            <button
+            <div
               key={note.id}
-              onClick={() => onSelectNote(note)}
-              className={`w-full text-left px-3 py-2 transition-colors ${
+              className={`group flex items-start justify-between px-3 py-2 transition-colors ${
                 selectedNoteId === note.id
                   ? "bg-primary text-primary-foreground"
                   : "hover:bg-accent text-muted-foreground"
               }`}
             >
-              <p className="text-xs font-medium truncate">{note.title}</p>
-              <p className="text-[11px] truncate opacity-60 mt-0.5">
-                {note.content.split("\n")[0] || "Empty note"}
-              </p>
-            </button>
+              {/* Note content — clicking selects it */}
+              <button
+                onClick={() => onSelectNote(note)}
+                className="flex-1 min-w-0 text-left"
+              >
+                <p className="text-xs font-medium truncate">{note.title}</p>
+                <p className="text-[11px] truncate opacity-60 mt-0.5">
+                  {note.content.split("\n")[0] || "Empty note"}
+                </p>
+              </button>
+
+              {/* Delete button — only visible on hover */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDeleteNote(note.id);
+                }}
+                className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-destructive/20 hover:text-destructive transition-all shrink-0 mt-0.5"
+              >
+                <Trash2 size={11} />
+              </button>
+            </div>
           ))
         )}
       </div>
