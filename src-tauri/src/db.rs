@@ -11,7 +11,8 @@ pub fn init_db() -> Result<Connection> {
     std::fs::create_dir_all(path.parent().unwrap()).ok();
     let conn = Connection::open(&path)?;
 
-    conn.execute_batch("
+    conn.execute_batch(
+        "
         CREATE TABLE IF NOT EXISTS folders (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
@@ -57,7 +58,22 @@ pub fn init_db() -> Result<Connection> {
             tag_id TEXT NOT NULL,
             PRIMARY KEY (note_id, tag_id)
         );
-    ")?;
+        CREATE TABLE IF NOT EXISTS threads (
+            id TEXT PRIMARY KEY,
+            title TEXT NOT NULL,
+            created_at TEXT,
+            updated_at TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS messages (
+            id TEXT PRIMARY KEY,
+            thread_id TEXT NOT NULL,
+            role TEXT NOT NULL,
+            content TEXT NOT NULL,
+            created_at TEXT
+        );
+    ",
+    )?;
 
     Ok(conn)
 }

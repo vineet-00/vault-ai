@@ -37,6 +37,21 @@ export interface Note {
   updated_at: string | null;
 }
 
+export interface Thread {
+  id: string;
+  title: string;
+  created_at: string | null;
+  updated_at: string | null;
+}
+
+export interface Message {
+  id: string;
+  thread_id: string;
+  role: "user" | "assistant";
+  content: string;
+  created_at: string | null;
+}
+
 export async function getFolders(): Promise<Folder[]> {
   return invoke<Folder[]>("get_folders");
 }
@@ -90,4 +105,31 @@ export async function updateNote(
 
 export async function deleteNote(id: string): Promise<boolean> {
   return invoke<boolean>("delete_note", { id });
+}
+
+export async function getThreads(): Promise<Thread[]> {
+  return invoke<Thread[]>("get_threads");
+}
+
+export async function createThread(title: string): Promise<Thread> {
+  return invoke<Thread>("create_thread", { title });
+}
+
+export async function deleteThread(id: string): Promise<boolean> {
+  return invoke<boolean>("delete_thread", { id });
+}
+
+export async function sendMessage(
+  threadId: string,
+  content: string,
+): Promise<void> {
+  return invoke("send_message", { threadId, content });
+}
+
+export async function getMessages(threadId: string): Promise<Message[]> {
+  return invoke<Message[]>("get_messages", { threadId });
+}
+
+export async function renameThread(id: string, title: string): Promise<void> {
+  return invoke("rename_thread", { id, title });
 }

@@ -30,12 +30,28 @@ pub struct Document {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-    pub struct Note{
+pub struct Note {
     pub id: String,
     pub title: String,
     pub content: String,
     pub folder_id: Option<String>,
     pub tags: Vec<Tag>,
     pub created_at: Option<String>,
-    pub updated_at: Option<String>
+    pub updated_at: Option<String>,
+}
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Thread {
+    pub id: String,
+    pub title: String,
+    pub created_at: Option<String>,
+    pub updated_at: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Message {
+    pub id: String,
+    pub thread_id: String,
+    pub role: String,
+    pub content: String,
+    pub created_at: Option<String>,
 }

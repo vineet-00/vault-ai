@@ -1,15 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import AIAssistant from "@/components/ai-assistant/AIAssistant";
 
 export const Route = createFileRoute("/assistant")({
-  component: AssistantPage,
+  component: AIAssistant,
 });
-
-function AssistantPage() {
-  return (
-    <div className="flex items-center justify-center h-full">
-      <p className="text-zinc-600 text-sm">
-        AI Assistant — coming in Milestone 4
-      </p>
-    </div>
-  );
-}

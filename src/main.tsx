@@ -5,14 +5,12 @@ import "./index.css";
 import { ThemeProvider } from "./components/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider
+    attribute="class"
+    defaultTheme="dark"
+    enableSystem
+    disableTransitionOnChange
+  >
+    <App />
+  </ThemeProvider>,
 );
