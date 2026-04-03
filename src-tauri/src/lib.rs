@@ -6,12 +6,14 @@ mod commands {
     pub mod search;
     pub mod vault;
     pub mod chat;
+    pub mod settings;
 }
 
 use commands::ingest::ingest_file;
 use commands::notes::{create_note, delete_note, get_notes, update_note};
 use commands::vault::{add_tag, delete_document, get_documents, get_folders, get_tags};
 use commands::chat::{create_thread, delete_thread, get_messages, get_threads, send_message, rename_thread};
+use commands::settings::{add_watched_folder, get_ollama_models, get_watched_folders, remove_watched_folder, toggle_folder_pause};
 
 async fn ensure_ollama_running() {
     let client = reqwest::Client::new();
@@ -67,6 +69,11 @@ pub fn run() {
             get_messages,
             send_message,
             rename_thread,
+            get_watched_folders,
+            add_watched_folder,
+            remove_watched_folder,
+            toggle_folder_pause,
+            get_ollama_models,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application")

@@ -52,6 +52,18 @@ export interface Message {
   created_at: string | null;
 }
 
+export interface WatchedFolder {
+  id: string;
+  path: string;
+  is_paused: boolean;
+  created_at: string | null;
+}
+
+export interface OllamaModel {
+  name: string;
+  size: number;
+}
+
 export async function getFolders(): Promise<Folder[]> {
   return invoke<Folder[]>("get_folders");
 }
@@ -132,4 +144,24 @@ export async function getMessages(threadId: string): Promise<Message[]> {
 
 export async function renameThread(id: string, title: string): Promise<void> {
   return invoke("rename_thread", { id, title });
+}
+
+export async function getWatchedFolders(): Promise<WatchedFolder[]> {
+  return invoke<WatchedFolder[]>("get_watched_folders");
+}
+
+export async function addWatchedFolder(path: string): Promise<WatchedFolder> {
+  return invoke<WatchedFolder>("add_watched_folder", { path });
+}
+
+export async function removeWatchedFolder(id: string): Promise<boolean> {
+  return invoke<boolean>("remove_watched_folder", { id });
+}
+
+export async function toggleFolderPause(id: string): Promise<WatchedFolder> {
+  return invoke<WatchedFolder>("toggle_folder_pause", { id });
+}
+
+export async function getOllamaModels(): Promise<OllamaModel[]> {
+  return invoke<OllamaModel[]>("get_ollama_models");
 }

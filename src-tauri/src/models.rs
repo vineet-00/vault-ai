@@ -55,3 +55,11 @@ pub struct Message {
     pub content: String,
     pub created_at: Option<String>,
 }
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct WatchedFolder {
+    pub id: String,
+    pub path: String,
+    pub is_paused: bool,
+    pub created_at: Option<String>,
+}

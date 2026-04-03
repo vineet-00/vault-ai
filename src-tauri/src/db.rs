@@ -72,6 +72,12 @@ pub fn init_db() -> Result<Connection> {
             content TEXT NOT NULL,
             created_at TEXT
         );
+        CREATE TABLE IF NOT EXISTS watched_folders (
+            id TEXT PRIMARY KEY,
+            path TEXT NOT NULL UNIQUE,
+            is_paused INTEGER NOT NULL DEFAULT 0,
+            created_at TEXT
+        );
     ",
     )?;
 
