@@ -6,6 +6,7 @@ import {
   pickFile,
   Document as VaultDocument,
   deleteDocument,
+  embedDocument,
 } from "@/lib/tauri";
 import { useEffect, useState } from "react";
 import { DocumentRow } from "./DocumentRow";
@@ -13,6 +14,7 @@ import { EmptyState } from "./EmptyState";
 import FolderTree from "./FolderTree";
 import PreviewPanel from "./PreviewPanel";
 import { Plus } from "lucide-react";
+import { listen } from "@tauri-apps/api/event";
 
 export const VaultHome = () => {
   const [documents, setDocuments] = useState<VaultDocument[]>([]);
@@ -27,13 +29,23 @@ export const VaultHome = () => {
     try {
       const doc = await ingestFile(path);
       setDocuments((prev) => [...prev, doc]);
+      // Trigger embedding in background
+      embedDocument(doc.id).catch(console.error);
     } catch (err) {
-      console.error("Failed to ingest file:" + err);
+      console.error("Failed to ingest file:", err);
     }
   };
 
   useEffect(() => {
-    getDocuments().then(setDocuments).catch(console.error);
+    getDocuments()
+      .then((docs) => {
+        setDocuments(docs);
+        // Embed any pending documents
+        docs
+          .filter((d) => d.embedding_status === "pending")
+          .forEach((d) => embedDocument(d.id).catch(console.error));
+      })
+      .catch(console.error);
     getFolders().then(setFolders).catch(console.error);
   }, []);
 
@@ -46,6 +58,20 @@ export const VaultHome = () => {
       console.error("Failed to delete document:", err);
     }
   };
+
+  useEffect(() => {
+    const unlisten = listen<[string, string]>("embedding_status", (e) => {
+      const [docId, status] = e.payload;
+      setDocuments((prev) =>
+        prev.map((d) =>
+          d.id === docId ? { ...d, embedding_status: status } : d,
+        ),
+      );
+    });
+    return () => {
+      unlisten.then((f) => f());
+    };
+  }, []);
 
   return (
     <div className="h-full flex overflow-hidden">

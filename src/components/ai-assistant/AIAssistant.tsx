@@ -1,19 +1,20 @@
-import { useEffect, useRef, useState } from "react";
-import { listen } from "@tauri-apps/api/event";
 import {
   createThread,
+  deleteThread,
   getMessages,
   getThreads,
-  deleteThread,
+  Message,
   renameThread,
   sendMessage,
-  Message,
   Thread,
 } from "@/lib/tauri";
-import ThreadSidebar from "./ThreadSidebar";
-import ChatMessage from "./ChatMessage";
-import ChatInput from "./ChatInput";
+import { listen } from "@tauri-apps/api/event";
 import { Bot } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import ChatInput from "./ChatInput";
+import ChatMessage from "./ChatMessage";
+import ThreadSidebar from "./ThreadSidebar";
 
 export const AIAssistant = () => {
   const [threads, setThreads] = useState<Thread[]>([]);
@@ -171,7 +172,24 @@ export const AIAssistant = () => {
                   <Bot size={14} className="text-muted-foreground" />
                 </div>
                 <div className="max-w-[75%] rounded-xl px-3 py-2 bg-muted text-foreground text-sm">
-                  {streamingContent || (
+                  {streamingContent ? (
+                    <div
+                      className="prose prose-sm prose-invert max-w-none
+                      [&>p]:mb-2 [&>p]:leading-relaxed
+                      [&>ul]:mb-2 [&>ul]:pl-4 [&>ul>li]:mb-1
+                      [&>ol]:mb-2 [&>ol]:pl-4 [&>ol>li]:mb-1
+                      [&>h1]:text-base [&>h1]:font-bold [&>h1]:mb-2
+                      [&>h2]:text-sm [&>h2]:font-semibold [&>h2]:mb-2
+                      [&>h3]:text-sm [&>h3]:font-medium [&>h3]:mb-1
+                      [&>code]:bg-background/40 [&>code]:px-1 [&>code]:rounded [&>code]:text-xs [&>code]:font-mono
+                      [&>pre]:bg-background/40 [&>pre]:p-2 [&>pre]:rounded-lg [&>pre]:mb-2 [&>pre]:overflow-x-auto
+                      [&>pre>code]:bg-transparent [&>pre>code]:p-0
+                      [&>strong]:font-semibold
+                      [&>blockquote]:border-l-2 [&>blockquote]:border-muted-foreground [&>blockquote]:pl-3 [&>blockquote]:italic"
+                    >
+                      <ReactMarkdown>{streamingContent}</ReactMarkdown>
+                    </div>
+                  ) : (
                     <span className="text-muted-foreground animate-pulse">
                       Thinking...
                     </span>

@@ -35,9 +35,10 @@ usearch = "2"
 pdf-extract = "0.7"
 
 # Embeddings via candle (local, no Python needed)
-candle-core = "0.8"
-candle-nn = "0.8"
-candle-transformers = "0.8"
+# candle-core = "0.8"
+# candle-nn = "0.8"
+# candle-transformers = "0.8"
+fastembed = "4"
 
 # File watching (live folder watch feature)
 notify = "6"

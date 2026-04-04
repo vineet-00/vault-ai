@@ -165,3 +165,7 @@ export async function toggleFolderPause(id: string): Promise<WatchedFolder> {
 export async function getOllamaModels(): Promise<OllamaModel[]> {
   return invoke<OllamaModel[]>("get_ollama_models");
 }
+
+export async function embedDocument(documentId: string): Promise<void> {
+  return invoke("embed_document", { documentId });
+}

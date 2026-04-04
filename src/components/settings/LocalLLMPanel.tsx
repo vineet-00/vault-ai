@@ -5,7 +5,7 @@ import { Bot } from "lucide-react";
 export const LocalLLMPanel = () => {
   const [models, setModels] = useState<OllamaModel[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeModel, setActiveModel] = useState("phi3:mini");
+  const [activeModel, setActiveModel] = useState("llama3.2");
 
   useEffect(() => {
     getOllamaModels()

@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
 use uuid::Uuid;
 use tauri::Emitter;
+use crate::commands::search::get_relevant_context;
 
 // ── Ollama API shapes ────────────────────────────────────────────────────────
 
@@ -124,7 +125,6 @@ pub async fn send_message(
         )
         .map_err(|e| e.to_string())?;
 
-        // Update thread updated_at
         conn.execute(
             "UPDATE threads SET updated_at = ?1 WHERE id = ?2",
             rusqlite::params![&now, &thread_id],
@@ -153,14 +153,45 @@ pub async fn send_message(
             .filter_map(|r| r.ok())
             .collect();
 
-        result  // collected before conn and stmt drop
+        result
     };
 
-    // 3. Call Ollama with streaming
+    // 3. Get relevant context from vault via RAG
+    let context = get_relevant_context(&content, 3).unwrap_or_default();
+
+    // 4. Build messages — inject system prompt with context if available
+    let mut messages_with_context = history.clone();
+    if !context.is_empty() {
+        let system_msg = OllamaMessage {
+            role: "system".to_string(),
+            content: format!(
+                "You are VaultAI, a personal knowledge assistant. \
+                 Answer using ONLY the context below. \
+                 Format your response clearly using markdown: \
+                 use bullet points for lists, **bold** for key terms, \
+                 headers for sections, and code blocks for code. \
+                 Keep responses concise and well-structured. \
+                 If the answer is not in the context, say 'I could not find this in your vault.'\n\n\
+                 CONTEXT:\n{context}"
+            ),
+        };
+        messages_with_context.insert(0, system_msg);
+    } else {
+        let system_msg = OllamaMessage {
+            role: "system".to_string(),
+            content: "You are VaultAI, a personal knowledge assistant. \
+                      Format responses using markdown: bullet points, **bold** for key terms, \
+                      headers for sections. Keep responses concise and well-structured."
+                .to_string(),
+        };
+        messages_with_context.insert(0, system_msg);
+    }
+
+    // 5. Call Ollama with streaming
     let client = reqwest::Client::new();
     let request_body = OllamaRequest {
-        model: "phi3:mini".to_string(),
-        messages: history,
+        model: "llama3.2".to_string(),
+        messages: messages_with_context,
         stream: true,
     };
 
@@ -171,7 +202,7 @@ pub async fn send_message(
         .await
         .map_err(|e| e.to_string())?;
 
-    // 4. Stream tokens to frontend
+    // 6. Stream tokens to frontend
     let mut full_response = String::new();
     let mut done = false;
 
@@ -191,6 +222,7 @@ pub async fn send_message(
                 }
                 if parsed.done {
                     done = true;
+
                     // Save assistant response to SQLite
                     let conn = init_db().map_err(|e| e.to_string())?;
                     let msg_id = Uuid::new_v4().to_string();
@@ -201,6 +233,7 @@ pub async fn send_message(
                         rusqlite::params![&msg_id, &thread_id, &full_response, &now],
                     )
                     .map_err(|e| e.to_string())?;
+
                     app.emit("message_complete", &full_response)
                         .map_err(|e| e.to_string())?;
                     break;

@@ -1,3 +1,4 @@
+import ReactMarkdown from "react-markdown";
 import { Message } from "@/lib/tauri";
 import { User, Bot } from "lucide-react";
 
@@ -10,7 +11,6 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
 
   return (
     <div className={`flex gap-3 px-4 py-3 ${isUser ? "flex-row-reverse" : ""}`}>
-      {/* Avatar */}
       <div
         className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
           isUser ? "bg-primary" : "bg-muted"
@@ -23,7 +23,6 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
         )}
       </div>
 
-      {/* Bubble */}
       <div
         className={`max-w-[75%] rounded-xl px-3 py-2 text-sm ${
           isUser
@@ -31,7 +30,29 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
             : "bg-muted text-foreground"
         }`}
       >
-        <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+        {isUser ? (
+          <p className="whitespace-pre-wrap leading-relaxed">
+            {message.content}
+          </p>
+        ) : (
+          <div
+            className="prose prose-sm prose-invert max-w-none
+            [&>p]:mb-2 [&>p]:leading-relaxed
+            [&>ul]:mb-2 [&>ul]:pl-4 [&>ul>li]:mb-1
+            [&>ol]:mb-2 [&>ol]:pl-4 [&>ol>li]:mb-1
+            [&>h1]:text-base [&>h1]:font-bold [&>h1]:mb-2
+            [&>h2]:text-sm [&>h2]:font-semibold [&>h2]:mb-1.5
+            [&>h3]:text-sm [&>h3]:font-semibold [&>h3]:mb-1
+            [&>code]:bg-background/40 [&>code]:px-1 [&>code]:rounded [&>code]:text-xs [&>code]:font-mono
+            [&>pre]:bg-background/40 [&>pre]:p-2 [&>pre]:rounded-lg [&>pre]:mb-2 [&>pre]:overflow-x-auto
+            [&>pre>code]:bg-transparent [&>pre>code]:p-0
+            [&>blockquote]:border-l-2 [&>blockquote]:border-muted-foreground [&>blockquote]:pl-3 [&>blockquote]:text-muted-foreground
+            [&>strong]:font-semibold
+          "
+          >
+            <ReactMarkdown>{message.content}</ReactMarkdown>
+          </div>
+        )}
       </div>
     </div>
   );

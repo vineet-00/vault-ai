@@ -78,6 +78,16 @@ pub fn init_db() -> Result<Connection> {
             is_paused INTEGER NOT NULL DEFAULT 0,
             created_at TEXT
         );
+        CREATE TABLE IF NOT EXISTS chunks (
+            id TEXT PRIMARY KEY,
+            document_id TEXT NOT NULL,
+            content TEXT NOT NULL,
+            chunk_index INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS chunk_keys (
+            hash_key INTEGER PRIMARY KEY,
+            chunk_id TEXT NOT NULL
+        );
     ",
     )?;
 
